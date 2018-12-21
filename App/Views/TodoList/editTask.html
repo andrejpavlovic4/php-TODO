@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}New Task{% endblock %}
+{% block body %}
+<h1>Add new task</h1>
+
+{% for item in data %}
+<form action="/todolist/edittask" method="post" id="formSignup">
+
+    <div class="form-group">
+        <label for="inputTitle">Title</label>
+        <input id="inputTitle" id="title" name="title" value={{ item.title }} placeholder="Title" autofocus class="form-control" />
+        <input type="hidden" name="id" value={{id}}>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Priority</label>
+
+        <select class="form-control" id="exampleFormControlSelect1" name="priority">
+            <option selected="selected">{{ item.priority }}</option>
+            <option>low</option>
+            <option>normal</option>
+            <option>high</option>
+        </select>
+
+        <input type="hidden" name="id" value={{id}}>
+
+    </div>
+    <div class="form-group">
+        <label for="deadline">Deadline</label>
+        <input type="datetime-local" id="deadline" value="{{item.deadline}}" data-id="{{item.deadline}}" name="date"
+            class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect2">State</label>
+        <select class="form-control" id="exampleFormControlSelect2" name="state">
+            {% if item.state == 1 %}
+            <option>finished</option>
+            <option>not finished</option>
+            {% else %}
+            <option>not finished</option>
+            <option>finished</option>
+            {% endif %}
+        </select>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-default">Edit</button>
+</form>
+
+{% endfor %}
+{% endblock %}

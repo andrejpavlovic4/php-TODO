@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block footer %}
+
+<script>
+    $(document).ready(function () {
+        $(".newTask").click(function () {
+            var id = $(this).data("id");
+            $(this).attr('href', "/todolist/" + id + "/newTask")
+        });
+
+        $(".taskId").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: 'POST',
+                url: '/todolist/deletetask',
+                data: {
+                    "id": id
+                },
+                success: function (msg) {
+                    window.location.reload(true);
+                },
+            });
+        });
+
+        $(".todoListId").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: 'POST',
+                url: '/todolist/deletelist',
+                data: {
+                    "id": id
+                },
+                success: function (msg) {
+                    window.location.reload(true);
+                },
+            });
+        });
+
+        $(".editTask").click(function () {
+            var id = $(this).data("id");
+            $(this).attr('href', "/todolist/" + id + "/edittask")
+        });
+
+        $(".todoListId").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type: 'POST',
+                url: '/todolist/deletelist',
+                data: {
+                    "id": id
+                },
+                success: function (msg) {
+                    window.location.reload(true);
+                },
+            });
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block body %}
+
+<h1>Todo lists overview</h1>
+
+<br><br>
+<a href="/todolist/new">
+    <h3>Add a new todo list</h3>
+</a>
+
+{% for list in todo_lists %}
+<div style="margin-top: 20px">
+    <table class="table">
+        <tr>
+            <th>
+                <h4><b>List title</b></h4>
+            </th>
+            <th>
+                <h4><b>Created on</b></h4>
+            </th>
+            <th>
+                <h4><b>Number of tasks</b></h4>
+            </th>
+            <th><button class="btn btn-default todoListId" data-id="{{ list.id }}">Delete List</button></th>
+            <th><a href="/todolist/newtask" data-id="{{ list.id }}" class="newTask">New Task</a></th>
+        </tr>
+        <tr>
+            <td>{{ list.title }}</td>
+            <td>{{ list.created_on }}</td>
+            <td>{{ taskNumber }}</td>
+
+        </tr>
+        <br><br>
+
+        {% for item in task %}
+        {% if item.todo_list_id == list.id %}
+        <table class="table">
+            <tr>
+                <th>Task</th>
+                <th>Deadline</th>
+                <th>Priority</th>
+                <th>State</th>
+            </tr>
+
+            <td>{{ item.title }}</td>
+            <td>{{ item.deadline }}</td>
+            <td>{{ item.priority }}</td>
+            <td>{{ item.state }}</td>
+            <td><a href="/todolist/edittask.html" data-id="{{ item.id }}" class="editTask">Edit task</a></td>
+            <td><button class="btn btn-default taskId" data-id="{{item.id}}">Delete task</button></td>
+
+        </table>
+        {% endif %}
+        {% endfor %}
+    </table>
+</div>
+
+
+<br><br>
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+<h1>Welcome</h1>
+
+{% if current_user %}
+Check out the todo list app.
+<a href="/todolist/index">TODO APP</a>
+<br><br>
+
+{% else %}
+<a href="/signup/new">Sign up</a> or <a href="/login">log in</a>.
+{% endif %}
+
+{% endblock %}
